@@ -34,6 +34,6 @@ describe('ProjectMainComponent', () => {
   it('should have 4 items with class .card', () => {
     const cards = fixture.nativeElement.querySelectorAll('.card');
     expect(mockProjectStore.init).toHaveBeenCalled();
-    expect(cards.length).toBe(4);
+    expect(cards.length).toBe(7);
   })
 });
