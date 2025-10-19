@@ -1,18 +1,15 @@
 import { Injectable } from "@angular/core";
 import { ProjectService } from "../service/project.service";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, tap } from "rxjs";
 import { Project } from "../entity/project.entity";
 import { ProjectStore } from "./project.store";
-
-
 
 @Injectable({
     providedIn: 'root'
 })
-
 export class CurrentProjectStore {
-    projectData$: BehaviorSubject<Project | null> = new BehaviorSubject<Project | null>(null);
-    projectDataObservable$ = this.projectData$.asObservable(); 
+    currentProjectData$: BehaviorSubject<Project | null> = new BehaviorSubject<Project | null>(null);
+    currentProjectDataObservable$ = this.currentProjectData$.asObservable(); 
     
     constructor(
         private readonly projectStore: ProjectStore
@@ -20,14 +17,8 @@ export class CurrentProjectStore {
 
     }
 
-    getProjectData(id: string){
-
+    init(id: string){
+        this.currentProjectData$.next(this.projectStore.getById(id)); 
     }
-
-    init(){
-        
-    }
-
-    
 }
 
