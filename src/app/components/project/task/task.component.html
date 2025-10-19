@@ -1,0 +1,218 @@
+@let tasks = tasks$ | async;
+
+<div class="tasks-container">
+  @if (tasks?.length) {
+    @for (item of tasks; track $index) {
+      <div class="task">
+        <div class="status" [class.ongoing]="item.status === 0" [class.done]="item.status === 1" [class.todo]="item.status > 1">
+          @switch (item.status) {
+            @case (0) {
+              ONGOING
+            }
+            @case (1) {
+              DONE
+            }
+            @default {
+              TODO
+            }
+          }
+        </div>
+
+        <div class="tooltip-container">
+          <div class="relative-container">
+            <div class="grid-text">{{ item.title }}</div>
+            <div class="absolute">{{ item.description }}</div>
+          </div>
+        </div>
+
+        <div class="due-date">
+          {{ item.dueDate | date: 'mediumDate' }}
+        </div>
+
+        <div class="options-relative">
+            <div class="options-button" (click)="toggleDropdown($index)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+            <div class="options" [class.show]="isOpen() == $index" >
+                <div class="options-container" >
+                    <div>
+                        <span>
+                            Eliminar
+                        </span>
+                    </div>
+
+                    <div>
+                        <span>
+                            Ver
+                        </span>
+                    </div>
+
+                    <div>
+                        <span>
+                            Editar
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    }
+  } @else {
+    <p class="no-tasks">No tasks found for this project.</p>
+  }
+</div>
+
+<style>
+  .tasks-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+    font-family: "Segoe UI", Roboto, sans-serif;
+    padding: 50px;
+  }
+
+  .task {
+    display: grid;
+    grid-template-columns: 90px 200px 150px 30px;
+    align-items: center;
+    width: 100%;
+    background-color: #ffffff;
+    border-left: 5px solid #40739e;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 10px 16px;
+    transition: background-color 0.2s ease;
+    gap: 12px;
+  }
+
+  .task:hover {
+    background-color: #f5f7fa;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    border-radius: 6px;
+    padding: 4px 8px;
+    color: white;
+  }
+
+  .status.todo {
+    background-color: #e84118;
+  }
+
+  .status.ongoing {
+    background-color: #fbc531;
+    color: #2f3640;
+  }
+
+  .status.done {
+    background-color: #44bd32;
+  }
+
+  .tooltip-container {
+    width: 100%;
+  }
+
+  .grid-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #2f3640;
+  }
+
+  .relative-container {
+    position: relative;
+  }
+
+  .absolute {
+    display: none;
+    position: absolute;
+    top: -40px;
+    left: 0;
+    z-index: 10;
+    border: 1px solid #dcdde1;
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #2f3640;
+    white-space: normal;
+    max-width: 400px;
+  }
+
+  .relative-container:hover > .absolute {
+    display: block;
+  }
+
+  .due-date {
+    text-align: right;
+    color: #40739e;
+    font-weight: 500;
+  }
+
+  .no-tasks {
+    text-align: center;
+    color: #718093;
+    font-style: italic;
+    padding: 12px 0;
+  }
+
+  .options-button {
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  .options-button:hover{
+    background-color: rgb(194, 193, 193);
+  }
+
+  .options-relative {
+    position: relative;
+    display: inline-block;
+  }
+
+  .options-container{
+    display: flex;
+    flex-direction: column;
+    background-color: #dcdde1;
+    border-radius: 16px;
+    overflow: clip;
+  }
+
+  .options-container > div{
+    padding: 8px;
+  }
+
+  .options-container > div:hover{
+    background-color:rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+
+  .options{
+    position: absolute;
+    z-index: 10;
+    top: 100%;             
+    left: 50%;
+    transform: translateX(-50%);
+    transition: max-height 200ms ease;
+    max-height: 0px;
+    border-radius: 18px;
+    overflow: clip !important;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+
+  .show{
+    display: flex;
+    max-height: 300px;
+    border: 2px solid rgb(134, 125, 125);
+    border-radius: 18px;
+  }
+</style>

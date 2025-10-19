@@ -1,0 +1,36 @@
+import { Component, Input, OnInit, signal } from '@angular/core';
+import { TaskStore } from '../store/task.store';
+import { tasks, TaskState } from '../entity/task.entity';
+import { AsyncPipe, DatePipe } from '@angular/common';
+
+@Component({
+  selector: 'app-task',
+  imports: [AsyncPipe, DatePipe],
+  templateUrl: './task.component.html',
+})
+export class TaskComponent implements OnInit{
+  tasks$;
+  @Input() projectId!: string;
+  isOpen = signal(-1);
+
+  constructor(
+    private readonly taskStore: TaskStore
+  ){
+    this.tasks$ = this.taskStore.taskObservable$;
+  }
+
+  ngOnInit(): void {
+    this.taskStore.init(this.projectId);
+  }
+
+  toggleDropdown(openId: number){
+    const id ={
+      id: openId
+    }
+
+    if (this.isOpen() == openId)
+      id.id = -1;
+
+    this.isOpen.set(id.id);
+  } 
+}

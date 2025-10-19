@@ -3,10 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectStore } from '../store/project.store';
 import { CurrentProjectStore } from '../store/current-project.store';
 import { AsyncPipe, CommonModule, DatePipe, JsonPipe } from '@angular/common';
+import { ProjectMainComponent } from "../project-main/project-main.component";
+import { TaskComponent } from "../task/task.component";
 
 @Component({
   selector: 'app-project-overview',
-  imports: [AsyncPipe, DatePipe, CommonModule],
+  imports: [AsyncPipe, DatePipe, CommonModule, ProjectMainComponent, TaskComponent],
   templateUrl: './project-overview.component.html',
   styleUrl: './project-overview.component.css'
 })
