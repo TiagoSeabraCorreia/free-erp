@@ -10,6 +10,7 @@ import { UiStore } from '../../ui/store/ui.store';
   templateUrl: './task.component.html',
 })
 export class TaskComponent implements OnInit{
+
   tasks$;
   @Input() projectId!: string;
   isOpen = signal(-1);
@@ -46,4 +47,16 @@ export class TaskComponent implements OnInit{
   onEdit(task: Task){
 
   }  
+
+  isOnGoing(item: TaskState) {
+    return item == TaskState.ONGOING;
+  }
+
+  isDone(item: TaskState) {
+    return item == TaskState.DONE;
+  }
+
+  isTodo(item: TaskState) {
+    return item == TaskState.TODO;
+  }
 }

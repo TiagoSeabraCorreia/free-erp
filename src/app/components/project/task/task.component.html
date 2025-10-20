@@ -8,12 +8,8 @@
   @if (tasks?.length) {
     @for (item of tasks; track $index) {
       <div class="task">
-        <div class="status" [class.ongoing]="item.status === 0" [class.done]="item.status === 1" [class.todo]="item.status > 1">
-          @switch (item.status) {
-            @case (0) { ONGOING }
-            @case (1) { DONE }
-            @default { TODO }
-          }
+        <div class="status" [class.ongoing]="isOnGoing(item.status)" [class.done]="isDone(item.status)" [class.todo]="isTodo(item.status)">
+          {{item.status}}
         </div>
 
         <div class="tooltip-container">
