@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { CurrentProjectStore } from '../store/current-project.store';
-import { ProjectStore } from '../store/project.store';
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { filter, map, Observable, of, tap } from 'rxjs';
-import { Project } from '../entity/project.entity';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { filter, Observable, tap } from 'rxjs';
 import { HoverDirective } from '../../../global/directives/hover.directive';
+import { Project } from '../entity/project.entity';
+import { ProjectStore } from '../store/project.store';
 
 @Component({
   selector: 'app-project-main',

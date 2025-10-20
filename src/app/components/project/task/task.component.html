@@ -1,23 +1,18 @@
 @let tasks = tasks$ | async;
 
 <div class="tasks-container">
-  <div (click)="uiStore.toggleModal()">
+  <div class="create-btn" (click)="uiStore.toggleModal()">
     Criar
   </div>
+
   @if (tasks?.length) {
     @for (item of tasks; track $index) {
       <div class="task">
         <div class="status" [class.ongoing]="item.status === 0" [class.done]="item.status === 1" [class.todo]="item.status > 1">
           @switch (item.status) {
-            @case (0) {
-              ONGOING
-            }
-            @case (1) {
-              DONE
-            }
-            @default {
-              TODO
-            }
+            @case (0) { ONGOING }
+            @case (1) { DONE }
+            @default { TODO }
           }
         </div>
 
@@ -33,30 +28,21 @@
         </div>
 
         <div class="options-relative">
-            <div class="options-button" (click)="toggleDropdown($index)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-            </div>
-            <div class="options" [class.show]="isOpen() == $index" >
-                <div class="options-container" >
-                    <div>
-                        <span>
-                            Eliminar
-                        </span>
-                    </div>
+          <div class="button-container">
+            <button class="options-button" (click)="toggleDropdown($index)" aria-label="Task options">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+          
 
-                    <div>
-                        <span>
-                            Ver
-                        </span>
-                    </div>
-
-                    <div>
-                        <span>
-                            Editar
-                        </span>
-                    </div>
-                </div>
+          <!-- Same behavior, just new styling -->
+          <div class="options" [class.show]="isOpen() == $index">
+            <div class="options-container">
+              <div (click)="onDelete(item)"><span>Eliminar</span></div>
+              <div (click)="onView(item)"><span>Ver</span></div>
+              <div (click)="onEdit(item)"><span>Editar</span></div>
             </div>
+          </div>
         </div>
       </div>
     }
@@ -70,153 +56,135 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 8px;
+    gap: 10px;
     font-family: "Segoe UI", Roboto, sans-serif;
-    padding: 50px;
+    padding: 24px 50px;
+    height: 100%;
   }
+
+  .create-btn{
+    align-self: flex-start;
+    background-color: #40739e;
+    color: #fff;
+    border: 1px solid #3a6d96;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: .95rem;
+    cursor: pointer;
+    transition: background-color .2s ease, box-shadow .2s ease, transform .06s ease;
+  }
+  .create-btn:hover{ background-color:#487eb0; box-shadow:0 4px 12px rgba(64,115,158,.25) }
+  .create-btn:active{ transform: translateY(1px) }
 
   .task {
     display: grid;
-    grid-template-columns: 90px 200px 150px 30px;
+    grid-template-columns: 110px 100px 140px 90px;
     align-items: center;
     width: 100%;
     background-color: #ffffff;
+    border: 1px solid #e6e9ec;
     border-left: 5px solid #40739e;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    padding: 10px 16px;
-    transition: background-color 0.2s ease;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    padding: 12px 16px;
+    transition: background-color .2s ease, box-shadow .2s ease;
     gap: 12px;
   }
-
-  .task:hover {
-    background-color: #f5f7fa;
-  }
+  .task:hover { background-color:#f7f9fb; box-shadow:0 4px 12px rgba(0,0,0,.06) }
 
   .status {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    border-radius: 6px;
-    padding: 4px 8px;
-    color: white;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:600; font-size:.9rem; text-transform:uppercase;
+    border-radius: 8px; padding: 6px 8px; color:#fff;
+    letter-spacing:.02em;
   }
+  .status.todo{ background-color:#e84118 }
+  .status.ongoing{ background-color:#fbc531; color:#2f3640 }
+  .status.done{ background-color:#44bd32 }
 
-  .status.todo {
-    background-color: #e84118;
-  }
-
-  .status.ongoing {
-    background-color: #fbc531;
-    color: #2f3640;
-  }
-
-  .status.done {
-    background-color: #44bd32;
-  }
-
-  .tooltip-container {
-    width: 100%;
-  }
-
+  .tooltip-container { width: 100% }
   .grid-text {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    color: #2f3640;
+    text-overflow: ellipsis; white-space: nowrap; overflow: hidden; color:#2f3640;
   }
-
-  .relative-container {
-    position: relative;
-  }
-
+  .relative-container { position: relative }
   .absolute {
-    display: none;
-    position: absolute;
-    top: -40px;
-    left: 0;
-    z-index: 999;
-    border: 1px solid #dcdde1;
-    border-radius: 4px;
-    padding: 6px 10px;
-    color: #2f3640;
-    white-space: normal;
-    max-width: 400px;
-    background-color: white;
+    display:none; position:absolute; top:-40px; left:0; z-index: 30;
+    border:1px solid #e6e9ec; border-radius:8px; padding:8px 10px; color:#2f3640;
+    white-space:normal; max-width:420px; background-color:#fff; box-shadow:0 8px 18px rgba(0,0,0,.12);
   }
+  .relative-container:hover > .absolute { display:block }
 
-  .relative-container:hover > .absolute {
-    display: block;
-  }
+  .due-date { text-align:right; color:#40739e; font-weight:500; font-size:.95rem }
 
-  .due-date {
-    text-align: right;
-    color: #40739e;
-    font-weight: 500;
-  }
+  .no-tasks { text-align:center; color:#718093; font-style:italic; padding: 12px 0 }
 
-  .no-tasks {
-    text-align: center;
-    color: #718093;
-    font-style: italic;
-    padding: 12px 0;
-  }
+  /* === Dropdown (same style language as project-card) === */
+  .options-relative { position: relative; display: inline-block }
 
-  .options-button {
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 8px;
+  .options-button{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:32px; height:32px;
+    background-color: rgba(64,115,158, .08);
+    color:#2f3640;
+    border:1px solid #e6e9ec;
+    border-radius: 10px;
+    cursor:pointer;
+    transition: background-color .2s ease, box-shadow .2s ease, transform .06s ease;
   }
-
-  .options-button:hover{
-    background-color: rgb(194, 193, 193);
-  }
-
-  .options-relative {
-    position: relative;
-    display: inline-block;
-  }
-
-  .options-container{
-    display: flex;
-    flex-direction: column;
-    background-color: #dcdde1;
-    border-radius: 16px;
-    overflow: clip;
-  }
-
-  .options-container > div{
-    padding: 8px;
-  }
-
-  .options-container > div:hover{
-    background-color:rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-  }
+  .options-button:hover{ background-color: rgba(64,115,158, .14); box-shadow:0 3px 10px rgba(0,0,0,.08) }
+  .options-button:active{ transform: translateY(1px) }
 
   .options{
-    position: absolute;
-    z-index: 10;
-    top: 100%;             
+    position:absolute;
+    top: calc(100% + 8px);
     left: 50%;
-    transform: translateX(-50%);
-    transition: max-height 200ms ease;
-    max-height: 0px;
-    border-radius: 18px;
-    overflow: clip !important;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transform: translate(-50%, -6px);
+    background-color:#fff;
+    border:1px solid #e6e9ec;
+    border-radius:12px;
+    box-shadow:0 10px 22px rgba(0,0,0,.12);
+    min-width: 180px;
+    display:flex;
+    width: 100%;
+    flex-direction:column;
+    padding:6px;
+    gap:4px;
+    pointer-events: none;    
+    opacity:0;
+    transition: opacity 140ms ease, transform 140ms ease;
+    z-index: 40;
+  }
+  .options.show{
+    pointer-events:auto;
+    opacity:1;
+    transform: translate(-50%, 0);
   }
 
-  .show{
+  .options-container{ display:flex; flex-direction:column; gap:4px }
+  .options-container > div{
+    padding:10px 10px;
+    border-radius:8px;
+    color:#2f3640;
+    font-size:.95rem;
+    cursor:pointer;
+    transition: background-color .15s ease;
+  }
+  .options-container > div:hover{ background-color:#f1f5f9 }
+
+  /* Mobile tweaks */
+  @media (max-width: 620px){
+    .task{ grid-template-columns: 90px 1fr 90px 36px; gap:8px }
+    .due-date{ font-size:.9rem }
+  }
+  @media (max-width: 420px){
+    .options{ left:auto; right:0; transform: translate(0, -6px) }
+    .options.show{ transform: translate(0, 0) }
+  }
+
+  .button-container{
     display: flex;
-    max-height: 300px;
-    border: 2px solid rgb(134, 125, 125);
-    border-radius: 18px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
   }
 </style>

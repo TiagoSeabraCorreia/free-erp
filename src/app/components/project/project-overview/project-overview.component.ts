@@ -15,6 +15,9 @@ import { TaskComponent } from "../task/task.component";
 export class ProjectOverviewComponent implements  OnInit {
   projectId: string;
   project$;
+  
+  isOpen = false;
+  
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -29,6 +32,22 @@ export class ProjectOverviewComponent implements  OnInit {
   }
 
   ngOnInit(): void {
-    
+
   }
+
+  toggleDropdown(){
+    this.isOpen = !this.isOpen;
+  }
+
+
+  onViewDetails(){
+
+  }
+  onDelete(){
+
+  }
+
+  onEdit(){
+
+  }  
 }
