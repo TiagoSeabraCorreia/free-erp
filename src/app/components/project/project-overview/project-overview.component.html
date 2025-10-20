@@ -17,6 +17,8 @@
       <p>{{ project?.description }}</p>
     </div>
   </div>
+
+  <app-task [projectId]="projectId" ></app-task>
 </div>
 
 <div class="loading" *ngIf="!project">

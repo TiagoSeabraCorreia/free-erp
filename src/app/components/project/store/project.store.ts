@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { ProjectService } from "../service/project.service";
 import { BehaviorSubject, catchError, EMPTY, of, tap, throwError } from "rxjs";
 import { Project } from "../entity/project.entity";
+import { UiStore } from "../../ui/store/ui.store";
 
 
 @Injectable({
@@ -16,7 +17,8 @@ export class ProjectStore {
 
     
     constructor(
-        private readonly projectService: ProjectService
+        private readonly projectService: ProjectService,
+        private readonly uiStore: UiStore
     ){
         
     }
@@ -37,7 +39,6 @@ export class ProjectStore {
     }
 
     getById(id: string) {
-        console.log(this.projectsSubject$.value);
         const filtered = this.projectsSubject$.value?.filter((item: Project) => item.id == id)[0];
 
         return filtered!;

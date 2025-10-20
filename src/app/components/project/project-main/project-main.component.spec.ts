@@ -4,6 +4,7 @@ import { ProjectMainComponent } from './project-main.component';
 import { ProjectStore } from '../store/project.store';
 import { projects } from '../entity/project.entity';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 describe('ProjectMainComponent', () => {
   let component: ProjectMainComponent;
@@ -13,11 +14,16 @@ describe('ProjectMainComponent', () => {
     init: jasmine.createSpy('init')
   }
 
+  const mockRouter = {
+    navigate: jasmine.createSpy()
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProjectMainComponent],
       providers: [
-        {provide: ProjectStore, useValue: mockProjectStore }
+        {provide: ProjectStore, useValue: mockProjectStore },
+        {provide: Router, useValue: mockRouter }
       ]
     })
     .compileComponents();
@@ -35,5 +41,10 @@ describe('ProjectMainComponent', () => {
     const cards = fixture.nativeElement.querySelectorAll('.card');
     expect(mockProjectStore.init).toHaveBeenCalled();
     expect(cards.length).toBe(7);
+  })
+
+  it('Should navigate', () => {
+    component.navigate('A');
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/projects/A']);
   })
 });
