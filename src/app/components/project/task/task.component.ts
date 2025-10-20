@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, signal } from '@angular/core';
 import { TaskStore } from '../store/task.store';
-import { tasks, TaskState } from '../entity/task.entity';
+import { Task, tasks, TaskState } from '../entity/task.entity';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { UiStore } from '../../ui/store/ui.store';
 
@@ -35,4 +35,15 @@ export class TaskComponent implements OnInit{
 
     this.isOpen.set(id.id);
   } 
+
+  onView(task: Task){
+
+  }
+  onDelete(task: Task){
+
+  }
+
+  onEdit(task: Task){
+
+  }  
 }

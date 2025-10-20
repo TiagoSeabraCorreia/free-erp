@@ -1,43 +1,80 @@
 @let project = project$ | async;
 
-<div class="project-card" *ngIf="project">
-  <div class="project-header">
-    <h1>{{ project?.name }}</h1>
-    <span class="project-id">#{{ project?.id }}</span>
-  </div>
+<div class="container">
+  <div class="project-card" *ngIf="project">
+    <div class="project-header">
+      <h1>{{ project?.name }}</h1>
 
-  <div class="project-body">
-    <div class="project-info">
-      <p><strong>Created on:</strong> {{ project?.creationDate | date: 'mediumDate' }}</p>
-      <p><strong>Due date:</strong> {{ project?.dueDate | date: 'mediumDate' }}</p>
+      <div class="project-actions">
+        <span class="project-id">#{{ project?.id }}</span>
+
+        <!-- Dropdown -->
+        <div class="dropdown">
+          <button class="dropdown-button options-button" (click)="toggleDropdown()">
+            Options
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+
+          <!-- Toggle .show via your component state -->
+          <div class="options" [class.show]="isOpen">
+            <button (click)="onEdit()">Edit</button>
+            <button (click)="onDelete()">Delete</button>
+            <button (click)="onViewDetails()">View details</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="project-description">
-      <h3>Description</h3>
-      <p>{{ project?.description }}</p>
+    <div class="project-body">
+      <div class="project-info">
+        <p><strong>Created on:</strong> {{ project?.creationDate | date: 'mediumDate' }}</p>
+        <p><strong>Due date:</strong> {{ project?.dueDate | date: 'mediumDate' }}</p>
+      </div>
+
+      <div class="project-description">
+        <h3>Description</h3>
+        <p>{{ project?.description }}</p>
+      </div>
     </div>
+
+    <app-task [projectId]="projectId" class="" />
   </div>
 
-  <app-task [projectId]="projectId" ></app-task>
-</div>
-
-<div class="loading" *ngIf="!project">
-  <p>Loading project...</p>
+  <div class="loading" *ngIf="!project">
+    <p>Loading project...</p>
+  </div>
 </div>
 
 <style>
+  app-task{
+    display: flex;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+  }
+
   .project-card {
     max-width: 650px;
-    margin: 50px auto;
     background-color: #ffffff;
-    border-radius: 16px;
     border: 1px solid #e6e9ec;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     font-family: "Segoe UI", Roboto, sans-serif;
     color: #2f3640;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    height: 100%;
+    border-radius: 16px;
+
   }
 
   .project-header {
@@ -47,11 +84,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
+    border-radius: 16px 16px 0px 0px;
   }
 
   .project-header h1 {
     margin: 0;
     font-size: 1.6rem;
+  }
+
+  .project-actions{
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
   .project-id {
@@ -99,5 +144,87 @@
     font-size: 1.1rem;
     color: #718093;
     margin-top: 60px;
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .dropdown-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.06s ease;
+    backdrop-filter: saturate(120%) blur(2px);
+  }
+
+  .dropdown-button:hover {
+    background-color: rgba(255,255,255,0.22);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  .dropdown-button:active {
+    transform: translateY(1px);
+  }
+
+  .options {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translate(-50%, -6px);
+    background-color: #fff;
+    border: 1px solid #e6e9ec;
+    border-radius: 12px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    min-width: 190px;
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    gap: 4px;
+    pointer-events: none;  /* hide interactions while closed */
+    opacity: 0;
+    transition: opacity 140ms ease, transform 140ms ease;
+    z-index: 40;
+  }
+
+  .options.show {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .options button {
+    background: none;
+    border: none;
+    padding: 10px 10px;
+    text-align: left;
+    font-size: 0.95rem;
+    color: #2f3640;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .options button:hover {
+    background-color: #f1f5f9;
+  }
+
+  @media (max-width: 420px){
+    .options{
+      left: auto;
+      right: 0;
+      transform: translate(0, -6px);
+    }
+    .options.show{
+      transform: translate(0, 0);
+    }
   }
 </style>
