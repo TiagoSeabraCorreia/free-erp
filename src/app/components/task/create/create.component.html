@@ -1,0 +1,53 @@
+<div class="pop-up"
+    [class.show]="uiStore.showModal() == true"
+    [class.leave]="uiStore.showModal() == false && uiStore.initialized() == true"
+>
+
+</div>
+
+
+<style>
+    .pop-up{
+        display: flex;
+        position: absolute;
+        left: 50%;
+        height: 500px;
+        width: 500px;
+        z-index: 1000;
+        top: -500px;
+        background-color: red;
+        transform: translate(-50%, -50%);
+    }
+
+    .show{
+        top: 50%;
+        animation: goToMiddle 500ms backwards;
+    }
+
+    .leave{
+        top: -500px;
+        animation: goAway 500ms;
+    }
+
+    @keyframes goAway{
+        0% {
+            top: 50%;
+        }
+
+        100%{
+            top:  -500px;
+        }
+    }
+
+    @keyframes goToMiddle {
+        0% {
+            top: -500px;
+        }
+
+        100%{
+            top:  50%;
+        }
+    }
+
+    
+</style>

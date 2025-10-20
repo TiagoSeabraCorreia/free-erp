@@ -2,6 +2,7 @@ import { Component, Input, OnInit, signal } from '@angular/core';
 import { TaskStore } from '../store/task.store';
 import { tasks, TaskState } from '../entity/task.entity';
 import { AsyncPipe, DatePipe } from '@angular/common';
+import { UiStore } from '../../ui/store/ui.store';
 
 @Component({
   selector: 'app-task',
@@ -14,7 +15,8 @@ export class TaskComponent implements OnInit{
   isOpen = signal(-1);
 
   constructor(
-    private readonly taskStore: TaskStore
+    private readonly taskStore: TaskStore,
+    readonly uiStore: UiStore
   ){
     this.tasks$ = this.taskStore.taskObservable$;
   }

@@ -4,8 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { CurrentProjectStore } from '../store/current-project.store';
 
-describe('ProjectOverviewComponent', () => {
-  let component: ProjectOverviewComponent;
+let component: ProjectOverviewComponent;
   let fixture: ComponentFixture<ProjectOverviewComponent>;
   let mockActivatedRoute = {
     snapshot:{
@@ -27,6 +26,9 @@ describe('ProjectOverviewComponent', () => {
     init: jasmine.createSpy(),
     currentProjectData$: of(expected)
   }
+
+describe('ProjectOverviewComponent', () => {
+  
 
  
 
@@ -61,5 +63,44 @@ describe('ProjectOverviewComponent', () => {
     expect(mockCurrentProjectStore.init).toHaveBeenCalled();
     expect(mockCurrentProjectStore.init).toHaveBeenCalledWith('PRJ006');
 
-  })  
+  })
+});
+
+describe('ProjectOverviewComponent with null route id', () => {
+  let component: ProjectOverviewComponent;
+  let fixture: ComponentFixture<ProjectOverviewComponent>;
+  let mockActivatedRoute: any;
+  let mockCurrentProjectStore: any;
+
+  beforeEach(async () => {
+    mockActivatedRoute = {
+      snapshot: {
+        paramMap: {
+          get: () => null
+        }
+      }
+    };
+
+    mockCurrentProjectStore = {
+      init: jasmine.createSpy(),
+      currentProjectData$: of(null)
+    };
+
+    await TestBed.configureTestingModule({
+      imports: [ProjectOverviewComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: CurrentProjectStore, useValue: mockCurrentProjectStore }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ProjectOverviewComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+  });
+
+  it('should call init with empty string when no id is found', () => {
+    expect(mockCurrentProjectStore.init).toHaveBeenCalledOnceWith('');
+  });
 });

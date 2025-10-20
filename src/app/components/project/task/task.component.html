@@ -1,6 +1,9 @@
 @let tasks = tasks$ | async;
 
 <div class="tasks-container">
+  <div (click)="uiStore.toggleModal()">
+    Criar
+  </div>
   @if (tasks?.length) {
     @for (item of tasks; track $index) {
       <div class="task">
@@ -135,13 +138,14 @@
     position: absolute;
     top: -40px;
     left: 0;
-    z-index: 10;
+    z-index: 999;
     border: 1px solid #dcdde1;
     border-radius: 4px;
     padding: 6px 10px;
     color: #2f3640;
     white-space: normal;
     max-width: 400px;
+    background-color: white;
   }
 
   .relative-container:hover > .absolute {

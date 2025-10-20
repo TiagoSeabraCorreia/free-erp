@@ -53,4 +53,10 @@ describe('Task store test  suit', () => {
         expect(actual).toBeInstanceOf(Observable);
         expect(sut.taskSubject$.value).toEqual(null);
     })
+
+    it('Subject should be null', async () => {
+        const sut = new TaskStore(mockTaskService);
+        const actual = sut.init('');
+        expect(sut.taskSubject$.value).toBeNull();
+    })
 })
