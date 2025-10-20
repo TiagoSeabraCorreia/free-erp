@@ -28,10 +28,6 @@ let component: ProjectOverviewComponent;
   }
 
 describe('ProjectOverviewComponent', () => {
-  
-
- 
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProjectOverviewComponent],
