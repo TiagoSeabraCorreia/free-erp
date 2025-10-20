@@ -25,6 +25,9 @@ export class ProjectStore {
 
     init(){
         this.projectService.getProjects().pipe(
+            tap((data: Project[]) => {
+                console.log(data, 'A');
+            }),
             tap((data) => {
                 this.projectsSubject$.next(data);
             }),

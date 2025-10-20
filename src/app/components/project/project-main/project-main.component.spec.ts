@@ -41,11 +41,14 @@ describe('ProjectMainComponent', () => {
     const cards = fixture.nativeElement.querySelectorAll('.card');
     expect(mockProjectStore.init).toHaveBeenCalled();
     expect(cards.length).toBe(7);
+<<<<<<< HEAD
   })
 
   it('Should navigate', () => {
     component.navigate('A');
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/projects/A']);
     
+=======
+>>>>>>> main
   })
 });
