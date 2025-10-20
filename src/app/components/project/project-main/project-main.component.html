@@ -1,100 +1,169 @@
 @let projects = projects$ | async;
 
 <div class="main-container">
-    <div class="container">
-        <div class="search-container">
-            <label for="Procurar projetos">Procurar projetos</label>
-            <input #search type="text">
-        </div>
-        <h1>Ultimo projeto acedido</h1>
-        <div class="cards-container">
-             <div class="card" appHoverEffect>
-                <div class="header">
-                    <h2>{{lastAcessedProject?.name}}</h2>
-                </div>
-            </div>           
-        </div>
-        <div class="projects">
-            <h1>Projetos recentes</h1>
-            <div class="cards-container">
-                @for (item of projects; track $index) {
-                    <div class="card" appHoverEffect>
-                        <h2>{{item.name}}</h2>
-                    </div>            
-                }
-            </div>
-        </div>
+  <div class="container">
+    <div class="search-container">
+      <label for="Procurar projetos">Procurar projetos</label>
+      <input #search type="text" placeholder="Digite o nome do projeto..." />
     </div>
+
+    <section class="last-accessed">
+      <h1>Último projeto acedido</h1>
+      <div class="cards-container">
+        <div class="card highlight" appHoverEffect>
+          <div class="header">
+            <h2>{{ lastAcessedProject?.name || 'Nenhum projeto selecionado' }}</h2>
+          </div>
+          <div class="body">
+            <p><strong>ID:</strong> {{ lastAcessedProject?.id }}</p>
+            <p><strong>Data de criação:</strong> {{ lastAcessedProject?.creationDate | date: 'mediumDate' }}</p>
+            <p><strong>Data limite:</strong> {{ lastAcessedProject?.dueDate | date: 'mediumDate' }}</p>
+            <p class="desc">{{ lastAcessedProject?.description }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects">
+      <h1>Projetos recentes</h1>
+      <div class="cards-container">
+        @for (item of projects; track $index) {
+          <div class="card" appHoverEffect (click)="navigate(item.id)">
+            <div class="header">
+              <h2>{{ item.name }}</h2>
+            </div>
+            <div class="body">
+              <p><strong>Criação:</strong> {{ item.creationDate | date: 'mediumDate' }}</p>
+              <p><strong>Data limite:</strong> {{ item.dueDate | date: 'mediumDate' }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
 </div>
 
 <style>
-    .main-container {
-        display: flex;
-        background-color: #f0f2f5; /* light neutral background */
-        height: 100%;
-        color: #1e1e1e; /* dark gray text */
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-    }
+  .main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f2f5;
+    color: #2f3640;
+    font-family: "Segoe UI", Roboto, sans-serif;
+    padding: 24px 0;
+  }
 
-    .container {
-        display: flex;
-        flex-direction: column; 
-        background-color: #ffffff; /* white container */
-        height: 100%;
-        color: #1e1e1e;
-        width: 90%;
-        height: 90%;
-        padding: 16px;
-        gap: 16px;
-    }
+  .container {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    width: 90%;
+    height: auto;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    gap: 24px;
+  }
 
-    .cards-container {
-        display: flex;
-        flex-direction: row;
-        gap: 8px;
-    }
+  .search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
 
-    .cards-container > .card {
-        display: flex;
-        flex-direction: column;
-        background-color: #4a90e2; 
-        color: #ffffff;
-        min-width: 300px;
-        max-width: 300px;
-        min-height: 200px;
-        gap: 8px;
-        justify-content: center;
-        align-items: center;
-        border-radius: 8px;
-    }
+  .search-container label {
+    font-weight: 600;
+    color: #273c75;
+  }
 
-    .card > .body{
-        overflow-wrap: break-word;
-    }
+  .search-container input {
+    all: unset;
+    border: 1.5px solid #40739e;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 1rem;
+    background-color: #f7f9fb;
+    transition: 0.2s ease;
+  }
 
-    .card > .header{
-        overflow-wrap: break-word;
-    }
+  .search-container input:focus {
+    border-color: #4cd137;
+    box-shadow: 0 0 0 2px rgba(76, 209, 55, 0.2);
+  }
 
+  .last-accessed h1,
+  .projects h1 {
+    margin-bottom: 10px;
+    color: #40739e;
+    font-size: 1.4rem;
+  }
 
-    .search-container {
-        background-color: #f7f9fb; /* slightly lighter background for search area */
-        color: #1e1e1e;
-        display: flex;
-        flex-direction: column;
-    }
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
 
-    .search-container > input{
-        all: unset;
-        padding: 4px;
-        border-radius: 4px;
-        border: 2px solid green;
-    }
+  .card {
+    display: flex;
+    flex-direction: column;
+    background-color: #40739e;
+    color: #ffffff;
+    min-width: 260px;
+    max-width: 300px;
+    min-height: 200px;
+    padding: 16px;
+    border-radius: 10px;
+    gap: 8px;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out, background-color 0.15s;
+  }
 
-    .projects{
-        display: flex;
-        flex-direction: column;
-    }
+  .card:hover {
+    background-color: #487eb0;
+    transform: translateY(-3px);
+  }
+
+  .card.highlight {
+    background-color: #273c75;
+    flex: 1;
+    max-width: 100%;
+  }
+
+  .card .header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #ffffff;
+    word-wrap: break-word;
+  }
+
+  .card .body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .card .body p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .card .body strong {
+    color: #dcdde1;
+  }
+
+  .card .desc {
+    margin-top: 6px;
+    line-height: 1.4;
+    font-size: 0.95rem;
+  }
+
+  .projects {
+    display: flex;
+    flex-direction: column;
+  }
 </style>

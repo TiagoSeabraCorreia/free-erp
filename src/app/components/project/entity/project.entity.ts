@@ -8,14 +8,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: "ABCDE",
+    id: "PRJ006",
     creationDate: new Date('2025-01-10'),
     name: 'Inventory Management System',
     dueDate: '2025-03-15',
     description: 'A system to track stock levels, purchases, and deliveries.'
   },
   {
-    id: "ABCDEX",
+    id: "PRJ005",
     creationDate: new Date('2025-02-05'),
     name: 'Customer Portal',
     dueDate: '2025-05-01',
