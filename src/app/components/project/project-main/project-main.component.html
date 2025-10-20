@@ -1,0 +1,100 @@
+@let projects = projects$ | async;
+
+<div class="main-container">
+    <div class="container">
+        <div class="search-container">
+            <label for="Procurar projetos">Procurar projetos</label>
+            <input #search type="text">
+        </div>
+        <h1>Ultimo projeto acedido</h1>
+        <div class="cards-container">
+             <div class="card" appHoverEffect>
+                <div class="header">
+                    <h2>{{lastAcessedProject?.name}}</h2>
+                </div>
+            </div>           
+        </div>
+        <div class="projects">
+            <h1>Projetos recentes</h1>
+            <div class="cards-container">
+                @for (item of projects; track $index) {
+                    <div class="card" appHoverEffect>
+                        <h2>{{item.name}}</h2>
+                    </div>            
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .main-container {
+        display: flex;
+        background-color: #f0f2f5; /* light neutral background */
+        height: 100%;
+        color: #1e1e1e; /* dark gray text */
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column; 
+        background-color: #ffffff; /* white container */
+        height: 100%;
+        color: #1e1e1e;
+        width: 90%;
+        height: 90%;
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .cards-container {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .cards-container > .card {
+        display: flex;
+        flex-direction: column;
+        background-color: #4a90e2; 
+        color: #ffffff;
+        min-width: 300px;
+        max-width: 300px;
+        min-height: 200px;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+    }
+
+    .card > .body{
+        overflow-wrap: break-word;
+    }
+
+    .card > .header{
+        overflow-wrap: break-word;
+    }
+
+
+    .search-container {
+        background-color: #f7f9fb; /* slightly lighter background for search area */
+        color: #1e1e1e;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-container > input{
+        all: unset;
+        padding: 4px;
+        border-radius: 4px;
+        border: 2px solid green;
+    }
+
+    .projects{
+        display: flex;
+        flex-direction: column;
+    }
+</style>
