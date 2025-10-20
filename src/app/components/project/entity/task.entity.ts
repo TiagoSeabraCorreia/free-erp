@@ -1,7 +1,11 @@
 
-export enum TaskState{
-  ONGOING, DONE, TODO
+export enum TaskState {
+  ONGOING = 'In Progress',
+  DONE = 'Done',
+  TODO = 'Todo'
 }
+
+
 
 export interface Task {
   id: string;

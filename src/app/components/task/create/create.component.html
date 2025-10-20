@@ -1,53 +1,245 @@
-<div class="pop-up"
-    [class.show]="uiStore.showModal() == true"
-    [class.leave]="uiStore.showModal() == false && uiStore.initialized() == true"
+<div
+  class="pop-up"
+  [class.show]="uiStore.showModal() == true"
+  [class.leave]="uiStore.showModal() == false && uiStore.initialized() == true"
 >
+  <div class="modal-content">
+    <h2 class="modal-title">Criar Nova Tarefa</h2>
 
+    <form [formGroup]="formGroup" class="form-fields">
+      <!-- Title -->
+      <div class="form-field">
+        <label for="title">Título</label>
+        <input type="text" id="title" formControlName="title" placeholder="Digite o título da tarefa" />
+      </div>
+
+      <!-- Description -->
+      <div class="form-field">
+        <label for="description">Descrição</label>
+        <textarea id="description" formControlName="description" placeholder="Descreva a tarefa..."></textarea>
+      </div>
+
+      <!-- Dropdown -->
+      <div class="form-field">
+        <label>Estado</label>
+        <div class="dropdown-container">
+          <div class="dropdown-selected" (click)="toggleDropdown()">
+            {{ selectedState }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </div>
+
+          <div class="dropdown-options" [class.showDropdown]="dropdownOpen">
+            @for (item of taskStateValues; track $index) {
+              <div (click)="changeSelectedState(item)">
+                {{ item }}
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="create-btn" (click)="submit()">Criar!</button>
+    </form>
+  </div>
 </div>
 
-
 <style>
-    .pop-up{
-        display: flex;
-        position: absolute;
-        left: 50%;
-        height: 500px;
-        width: 500px;
-        z-index: 1000;
-        top: -500px;
-        background-color: red;
-        transform: translate(-50%, -50%);
+  .pop-up {
+    position: fixed;
+    top: -600px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 480px;
+    background-color: #ffffff;
+    border: 1px solid #e6e9ec;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    padding: 24px;
+    opacity: 0;
+    transition: top 0.4s ease, opacity 0.4s ease;
+    font-family: "Segoe UI", Roboto, sans-serif;
+  }
+
+  .show {
+    top: 50%;
+    opacity: 1;
+    animation: goToMiddle 400ms ease-out;
+  }
+
+  .leave {
+    top: -600px;
+    opacity: 0;
+    animation: goAway 400ms ease-in;
+  }
+
+  @keyframes goToMiddle {
+    0% {
+      top: -600px;
+      opacity: 0;
     }
-
-    .show{
-        top: 50%;
-        animation: goToMiddle 500ms backwards;
+    100% {
+      top: 50%;
+      opacity: 1;
     }
+  }
 
-    .leave{
-        top: -500px;
-        animation: goAway 500ms;
+  @keyframes goAway {
+    0% {
+      top: 50%;
+      opacity: 1;
     }
-
-    @keyframes goAway{
-        0% {
-            top: 50%;
-        }
-
-        100%{
-            top:  -500px;
-        }
+    100% {
+      top: -600px;
+      opacity: 0;
     }
+  }
 
-    @keyframes goToMiddle {
-        0% {
-            top: -500px;
-        }
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 
-        100%{
-            top:  50%;
-        }
+  .modal-title {
+    text-align: center;
+    margin: 0;
+    color: #40739e;
+    font-size: 1.4rem;
+    border-bottom: 1px solid #e6e9ec;
+    padding-bottom: 8px;
+  }
+
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #2f3640;
+  }
+
+  input,
+  textarea {
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #40739e;
+    box-shadow: 0 0 0 2px rgba(64, 115, 158, 0.2);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .dropdown-container {
+    position: relative;
+  }
+
+  .dropdown-selected {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f5f7fa;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .dropdown-selected:hover {
+    background-color: #eef2f5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  .dropdown-options {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #e6e9ec;
+    border-radius: 8px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-5px);
+    z-index: 10;
+  }
+
+  .dropdown-options.showDropdown {
+    pointer-events: auto;
+    animation: dpAnimation 200ms ease forwards;
+  }
+
+  @keyframes dpAnimation {
+    0% {
+      opacity: 0;
+      transform: translateY(-5px);
     }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-    
+  .dropdown-options div {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .dropdown-options div:hover {
+    background-color: #f1f5f9;
+  }
+
+  .create-btn {
+    background-color: #40739e;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.06s ease;
+  }
+
+  .create-btn:hover {
+    background-color: #487eb0;
+    box-shadow: 0 4px 12px rgba(64, 115, 158, 0.25);
+  }
+
+  .create-btn:active {
+    transform: translateY(1px);
+  }
+  
+  @media (max-width: 520px) {
+    .pop-up {
+      width: 90%;
+      padding: 20px;
+    }
+  }
 </style>
