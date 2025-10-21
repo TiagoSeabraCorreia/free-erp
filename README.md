@@ -26,17 +26,6 @@ It aims to provide a flexible foundation for business process automation, includ
 | **HTML / SCSS** | UI structure and styling |
 | **Jasmine / Karma** | Unit testing |
 | **E2E Framework (Customizable)** | For end-to-end testing setup |
-
----
-## Project Structure 
-free-erp/
-├── src/
-│   ├── app/
-│   │   ├──/module
-│   │   │   ├── components/          # Reusable and standalone UI components
-│   │   │   ├── store/               # Signal-based UI and data stores
-│   │   │   ├── services/            # Business logic and API interactions
-│   │   │   ├── entity/              # Entities, enums, and interfaces
 ---
 
 ## 💻 Getting Started
