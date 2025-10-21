@@ -37,7 +37,6 @@ git clone https://github.com/your-username/free-erp.git
 cd free-erp
 
 
-# 🧭 Project Structure
 free-erp/
 ├── src/
 │   ├── app/
