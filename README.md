@@ -1,64 +1,62 @@
-<<<<<<< HEAD
-# FreeErp
+# 🧩 FreeERP
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.10.
+**FreeERP** is a modular and lightweight **ERP frontend** built with **Angular 18**.  
+It aims to provide a flexible foundation for business process automation, including task management, project tracking, and workflow control — all within a clean, responsive interface.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Features
 
+- ⚙️ **Modular Architecture** — Built with Angular standalone components for high scalability.  
+- 💼 **Task and Project Management** — Create, view, and manage tasks with real-time updates.  
+- 🧭 **Signal-based State Management** — Uses Angular Signals for reactive and efficient UI updates.  
+- 🎨 **Modern UI** — Clean, responsive design with smooth animations and CSS transitions.  
+- 🔍 **Type-safe Data Handling** — Strong TypeScript and Enum usage for consistent data modeling.  
+- 🧪 **Fully Tested** — Unit tests with Jasmine and Karma; E2E-ready architecture.  
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|-------------|----------|
+| **Angular 18** | Main frontend framework |
+| **TypeScript** | Type-safe development |
+| **RxJS / Signals** | State and reactivity management |
+| **HTML / SCSS** | UI structure and styling |
+| **Jasmine / Karma** | Unit testing |
+| **E2E Framework (Customizable)** | For end-to-end testing setup |
+
+---
+
+## 💻 Getting Started
+
+### 1. Clone the Repository
 ```bash
-ng serve
-```
+git clone https://github.com/your-username/free-erp.git
+cd free-erp
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-=======
-# free-erp
-Free erp frontend. Built with Angular 18.
->>>>>>> 73f1c49f869924473f57c73585b46fdb7115c838
+# 🧭 Project Structure
+free-erp/
+├── src/
+│   ├── app/
+│   │   ├── components/          # Reusable and standalone UI components
+│   │   ├── pages/               # Feature pages (Dashboard, Projects, Tasks, etc.)
+│   │   ├── store/               # Signal-based UI and data stores
+│   │   ├── services/            # Business logic and API interactions
+│   │   ├── models/              # Entities, enums, and interfaces
+│   │   └── app.config.ts        # Application-level configuration
+│   │
+│   ├── assets/                  # Static resources (images, icons, etc.)
+│   ├── environments/            # Environment configuration files
+│   ├── main.ts                  # Application bootstrap entry point
+│   ├── styles/                  # Global styles and variables
+│   └── index.html               # Main HTML file
+│
+├── .angular/                    # Angular build cache
+├── angular.json                 # Angular project configuration
+├── package.json                 # Dependencies and scripts
+├── tsconfig.json                # TypeScript configuration
+├── README.md                    # Project documentation
+└── dist/                        # Production build output
