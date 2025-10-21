@@ -28,6 +28,36 @@ It aims to provide a flexible foundation for business process automation, includ
 | **E2E Framework (Customizable)** | For end-to-end testing setup |
 
 ---
+## Project Structure
+free-erp/
+├── src/
+│ ├── app/
+│ │ ├── components/
+│ │ │ ├── project/
+│ │ │ │ ├── entity/ # Entities and project-related models
+│ │ │ │ ├── project-main/ # Main project management page
+│ │ │ │ ├── project-overview/ # Project detail and overview component
+│ │ │ │ └── projects-dashboard/ # Dashboard showing all projects
+│ │ │ │
+│ │ │ ├── service/ # Shared business logic and data services
+│ │ │ ├── store/ # Signal-based state management
+│ │ │ ├── task/ # Task creation and management components
+│ │ │ └── ui/ # UI utilities (modals, toasts, dropdowns, etc.)
+│ │ │
+│ │ ├── routes.ts # Application routing configuration
+│ │
+│ ├── assets/ # Static assets (icons, images, etc.)
+│ ├── styles/ # Global SCSS styles and variables
+│ ├── main.ts # Application bootstrap entry
+│ ├── index.html # Main HTML entry point
+│ └── environments/ # Environment configuration files
+│
+├── angular.json # Angular workspace configuration
+├── package.json # Dependencies and scripts
+├── tsconfig.json # TypeScript configuration
+├── README.md # Project documentation
+└── dist/ # Production build output                       # Production build output
+---
 
 ## 💻 Getting Started
 
@@ -36,26 +66,3 @@ It aims to provide a flexible foundation for business process automation, includ
 git clone https://github.com/your-username/free-erp.git
 cd free-erp
 
-
-free-erp/
-├── src/
-│   ├── app/
-│   │   ├── components/          # Reusable and standalone UI components
-│   │   ├── pages/               # Feature pages (Dashboard, Projects, Tasks, etc.)
-│   │   ├── store/               # Signal-based UI and data stores
-│   │   ├── services/            # Business logic and API interactions
-│   │   ├── models/              # Entities, enums, and interfaces
-│   │   └── app.config.ts        # Application-level configuration
-│   │
-│   ├── assets/                  # Static resources (images, icons, etc.)
-│   ├── environments/            # Environment configuration files
-│   ├── main.ts                  # Application bootstrap entry point
-│   ├── styles/                  # Global styles and variables
-│   └── index.html               # Main HTML file
-│
-├── .angular/                    # Angular build cache
-├── angular.json                 # Angular project configuration
-├── package.json                 # Dependencies and scripts
-├── tsconfig.json                # TypeScript configuration
-├── README.md                    # Project documentation
-└── dist/                        # Production build output
